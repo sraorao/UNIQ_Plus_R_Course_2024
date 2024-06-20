@@ -1,0 +1,176 @@
+---
+title: "Heroes"
+output: html_document
+date: "2023-05-09"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE) #code to be included in the knitted document
+```
+
+## Super hero dataset (Info)
+
+The first dataset contains various information about the superhero’s appearance,their body measurements etc. There are 10 variables in this dataset. Variable descriptions are as follows:
+Name: Name of the superhero
+Gender: Gender of the superhero
+Eye color: Eye color of the superhero
+Race: Species of the superhero
+Height: Height of the superhero(in cms)
+Publisher: Comic category of the superhero
+Skin color: Skin color of the superhero
+Alignment: Superhero’s nature.
+Weight: Weight of the superhero(in kgs)
+
+The second dataset records the superhero attributes such as their strength level,speed level etc.There are x variables in the dataset. 
+
+# Installing packages
+
+```{r}
+instal.packages("readr")
+install.packages("readxl")
+```
+
+
+
+
+# Importing files
+
+```{r}
+library(readxl)
+data= read_excel("~/Heroes/heroes_information.xlsx")
+View(data) 
+```
+
+
+# Data exploration
+
+```{r}
+head(data) # view first rows of the dataset
+data$...1 # eliminate this one column or rename 
+data= data[,-1]
+str(data) # see the structure and type of variable 
+dim(data) # dimension tibble/dataframe
+summary(data) # summary statistics
+table(is.na(data)) # looking for missing/null values. Careful! there are - 
+colSums(data =='-') 
+```
+
+
+# IDEAS to work before plotting data
+
+- Is there any variable which would be better to work being a different type?
+```{r}
+# Gender and alignment are probably better as a factor. Maybe also eye color and others. Transform
+
+```
+
+
+
+- Ideas on how to handle missing values / values with - values
+```{r}
+# Let's work on gender
+sum(is.na(data$Gender))
+rownames(data)[data$Gender =='-']
+
+
+data$Gender = as.factor(data$Gender) # we can first transform gender into factor
+str(data$Gender)
+levels(data$Gender)= c("Not Specified", "Female", "Male")# Then add a new level "not specified"
+data$Gender[is.na(data$Gender)] = "Not Specified" # convert na to not specified
+View(data)
+# Same could be done with missing data in race, eyecolor... 
+
+```
+
+- Create a new column (ex BMI) which is a combination of other two columnes (weight and height)
+```{r}
+library(dplyr)
+data_BMI= mutate(data,BMI=data$Weight/(data$Height/100)^2)
+View(data_BMI)
+```
+
+- Is there any data that does not make sense to start with? How would you filter these data?
+```{r}
+# Some weight values are negative which does not make sense. 
+# We could filter all the data that is over 0 for example
+data= data[data$Weight > 0,] # subset positive data for weight
+head(data)
+dim(data) # We went from 734 entries (heroes) to 497
+
+# Same with height.
+```
+
+
+# Visualization of the data
+```{r}
+# Boxplots for numeric data
+boxplot(data$Height) # We can see outliers. Or not? They are super heroes! 
+data= data[data$Height > 0,] # subset positive data for height
+
+boxplot(data$Weight)
+
+# Visualise histology graphs 
+hist(data$Height, breaks=30) 
+hist(data$Weight, breaks=30)
+
+plot(data$Gender) # graph categorical variables
+plot(data$Race) # ? what happens?
+
+```
+
+
+# More exercices
+
+- Is there a race that is always align to the good side?
+```{r}
+
+```
+
+
+- Is there any short heroe with  high weight? (Let's say less than a meter and higher than 100Kg)?
+```{r}
+hero= data$name[data$Height < 100 & data$Weight > 100]
+hero
+```
+
+# Now let's work with the second dataset
+
+```{r}
+library(readxl)
+powers= read_excel("~/Heroes/super_hero_powers.xlsx")
+View(powers) 
+
+str(powers)
+summary(powers)
+
+
+# Let's say we are just interested in 5 super powers. Subset them.
+colnames(powers)
+powers= powers[, c(1,16,34,38,71,101)]
+head(powers)
+
+# How we could possibly join the two datasets
+colnames(powers)[1] = "name"
+
+# cbind() careful with name column!
+
+heroe_data= inner_join(data,powers, by= "name") 
+
+View(heroe_data)
+
+# We can also work with two separate files/objects
+```
+
+
+# Exercices
+
+- Find if any of the female superheroes have levitation superpowers
+
+```{r}
+# Working with the combined dataframe
+heroe_data[heroe_data$Gender == "Female" & heroe_data$Levitation == TRUE,]
+
+# Working with separate dfs
+# LOOOPS 
+```
+

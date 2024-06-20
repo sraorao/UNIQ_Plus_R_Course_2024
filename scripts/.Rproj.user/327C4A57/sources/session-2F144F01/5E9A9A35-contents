@@ -1,0 +1,30 @@
+
+print("First R script!")
+# basic maths
+1 + 1
+3 * 5
+5/2
+3^3
+
+# reading data from file
+squirrel = read.csv("../UNIQ_PLUS_R_course-main/2018_Central_Park_Squirrel_Census_-_Squirrel_Data.csv")
+
+# what does the dataset look like?
+dim(squirrel)
+head(squirrel)
+tail(squirrel)
+colnames(squirrel)
+rownames(squirrel)
+
+# subsetting
+squirrel[1:5, ]
+squirrel[ , 1:5]
+squirrel[1:5, 1:5]
+squirrel$Age
+
+# summarising
+summary(squirrel)
+unique(squirrel$Primary.Fur.Color)
+table(squirrel$Age)
+table(squirrel$Age, squirrel$Location)
+

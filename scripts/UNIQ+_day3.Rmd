@@ -1,0 +1,64 @@
+---
+title: "Untitled"
+author: "Rao"
+date: "2023-07-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Merging data
+When you have related information in two or more data.frames, you can use the `merge()` function to join them correctly. The two data.frames that you want to join must have one or more columns with the same name - these are the ID columns that R uses to reorder the rows to match in both data.frames. If there are equivalent columns but the names are different, the column name in one has to be renamed to match the name in the other data.frame (as in the following example).
+
+```{r}
+heroes <- read.csv("../datasets/heroes_information.csv")
+powers <- read.csv("../datasets/super_hero_powers.csv")
+
+colnames(powers) <- sub("hero_names", "name", colnames(powers))
+
+# see the difference between the following
+heroes_with_powers <- merge(heroes, powers, by = "name")
+heroes_with_powers <- merge(heroes, powers, by = "name", all = TRUE)
+heroes_with_powers <- merge(heroes, powers, by = "name", all.x = TRUE)
+heroes_with_powers <- merge(heroes, powers, by = "name", all.y = TRUE)
+
+```
+
+Note that there are duplicated names in the `heroes` dataset. Because of this, the merging may give unexpected results. Try doing the same as the above, after removing the duplicated superheroes. Hint: you can filter out the duplicated superheroes using the `duplicated()` function on the `name` column.
+
+```{r}
+# Merge after removing duplicates
+
+```
+
+
+## Reshaping data
+Sometimes the data is not in the right format for the plot or analysis you want to run. You may need to reshape the data into wide or long format. The `tidyr` package (part of tidyverse) has the `pivot_` functions for this. An alternative is the `data.table` package with the `melt` and `dcast` functions.
+
+```{r}
+powers %>%
+  pivot_longer(cols = -name, names_to = "power", values_to = "value") -> powers_long
+
+powers_long %>%
+  pivot_wider(names_from = "power", values_from = "value") -> powers_wide
+
+```
+
+## Basic statistics
+
+Are the mean weights of male and female superheroes different? Is this difference statistically significant? Let's set our significance cutoff at 0.5
+
+```{r}
+male_heroes_weight <- heroes[heroes$Gender == "Male", "Weight"]
+female_heroes_weight <- heroes[heroes$Gender == "Female", "Weight"]
+
+t.test(male_heroes_weight, female_heroes_weight)
+```
+
+Is the weight of a superhero correlated to their height?
+```{r}
+cor.test(heroes$Weight, heroes$Height)
+
+```

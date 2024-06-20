@@ -1,0 +1,71 @@
+---
+title: "NYC Squirrel Data - Tidyverse"
+author: "Rao"
+date: "2023-07-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Installing packages
+
+To install packages from CRAN:
+
+```{r}
+install.packages("tidyverse")
+library(tidyverse)
+```
+
+
+## Reading data from files
+The `read` family functions are useful for reading text-based data formats like csv (comma-separated value), tsv (tab-separated value) and txt.
+
+```{r}
+# reading data from file
+squirrel <- read.csv("../datasets/nyc_squirrel_uniq_plus.csv")
+
+```
+
+
+
+
+## Subsetting a data.frame
+
+```{r}
+squirrel %>%
+  head()
+
+squirrel %>%
+  select(Unique.Squirrel.ID)
+
+```
+
+
+## Filtering
+
+
+
+```{r}
+squirrel %>%
+  filter(Age == "Adult")
+```
+
+## Summarising a data.frame
+
+
+
+```{r}
+squirrel %>%
+  group_by(Age) %>%
+  summarise(mean(Weight))
+
+```
+
+## Exercise
+
+- How many gray squirrels were found in the morning (AM) vs afternoon (PM)?
+
+- Other questions from Etherpad
+
+

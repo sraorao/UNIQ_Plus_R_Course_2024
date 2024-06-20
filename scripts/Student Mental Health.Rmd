@@ -1,0 +1,91 @@
+---
+title: "Student Mental Health"
+author: "Beatriz Gámez"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Student Mental Health database
+
+
+
+```{r import}
+data= read.csv("Student Mental health.csv")
+View(data)
+```
+
+## Data Exploration
+
+```{r data}
+dim(data) # 101 observations, 11 variables
+
+summary(data) 
+
+# From here it looks like having the course/current year of Study, Gender and others as factor instead of character could be useful. Let us change at least the "Your.current.year.of.study" variable.
+
+# Careful! There are "year 1" and "Year 1" which will look different when transformed to factor.
+data$Your.current.year.of.Study= toupper(data$Your.current.year.of.Study)
+data$Your.current.year.of.Study= as.factor(data$Your.current.year.of.Study)
+summary(data$Your.current.year.of.Study)
+
+
+```
+
+```{r}
+table(is.na(data))
+
+data[table(is.na(data)),] # is that an extra row? Where is it?
+```
+
+## QUESTIONS
+
+
+```{r}
+# How many students declared to be "depressed"?
+
+sum(data$Do.you.have.Depression. == "Yes")
+
+# How many of the depressed students had also anxiety?
+
+sum(data$Do.you.have.Depression. == "Yes" & data$Do.you.have.Anxiety.== "Yes")
+
+# How many of these looked for help?
+
+sum(data$Do.you.have.Depression. == "Yes" & data$Do.you.have.Anxiety.== "Yes" & data$Did.you.seek.any.specialist.for.a.treatment.== "Yes")
+
+# Are these students males or females?
+
+data$Choose.your.gender[data$Do.you.have.Depression. == "Yes" & data$Do.you.have.Anxiety.== "Yes" & data$Did.you.seek.any.specialist.for.a.treatment.== "Yes"]
+```
+
+```{r}
+# What is the course with more depressed students?
+data$What.is.your.course.[max(data$Do.you.have.Depression.== "Yes")]
+
+```
+
+```{r}
+# Plot the marital status of the dataset. Does marital status have any effect on depression?
+plot(data$Marital.status) # Does not work! Why?
+
+class(data$Marital.status)
+data$Marital.status= as.factor(data$Marital.status)
+
+plot(data$Marital.status)
+
+data$Do.you.have.Depression.= as.factor(data$Do.you.have.Depression.)
+plot(data$Marital.status~data$Do.you.have.Depression.)
+plot(data$Do.you.have.Depression.~data$Marital.status)
+
+sum(data$Marital.status == "Yes" & data$Do.you.have.Depression.=="Yes") # 16 students
+sum(data$Marital.status == "Yes" & data$Do.you.have.Depression.=="No") # There are no married students that have No depression. That means all the no depressed students are not married. Let us check that:
+
+data2= data[data$Do.you.have.Depression. == "No",]
+View (data2) # Looks like all the No depressed students are Not Married!
+
+```
+

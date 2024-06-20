@@ -1,0 +1,79 @@
+---
+title: "NYC Squirrel Data"
+author: "Rao"
+date: "2023-07-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Reading data from files
+The `read` family functions are useful for reading text-based data formats like csv (comma-separated value), tsv (tab-separated value) and txt.
+
+```{r}
+# reading data from file
+squirrel <- read.csv("nyc_squirrel_uniq_plus.csv")
+
+```
+
+The data that is read is stored in the form of a `data.frame`, which is a way to represent tabular data in R.
+
+## A quick look at the data.frame
+Several R functions enable us to peek at the data, as well as get information about the data (e.g. the number of data points, the kind of data)
+
+```{r}
+head(squirrel)
+tail(squirrel)
+View(squirrel)
+
+
+dim(squirrel)
+nrow(squirrel)
+ncol(squirrel)
+colnames(squirrel)
+rownames(squirrel)
+```
+
+## Subsetting a data.frame
+
+```{r}
+squirrel[1:5, ]
+squirrel[ , 1:5]
+squirrel[1:5, 1:5]
+squirrel$Age
+squirrel[ , "Unique.Squirrel.ID"]
+
+```
+
+
+## Filtering
+
+Keeping only tha part of the data that satisfy a specific condition (or a combination of conditions) is called filtering. Filtering in base R can be done using the subsetting notation `[ ]`.
+
+```{r}
+squirrel[squirrel$Age == "Adult", ] # only adult squirrels
+squirrel[squirrel$Shift == "AM", ] # only found in the morning
+
+# Filtering for only adult squirrels found in the morning
+squirrel[(squirrel$Age == "Adult") & (squirrel$Shift == "AM"), ]
+```
+
+## Summarising a data.frame
+
+The summary function is very helpful to find out the summary statistics of a data.frame column-by-column.
+
+```{r}
+summary(squirrel)
+
+table(squirrel$Shift)
+```
+
+## Exercise
+
+- How many gray squirrels were found in the morning (AM) vs afternoon (PM)?
+
+- Other questions from Etherpad
+
+

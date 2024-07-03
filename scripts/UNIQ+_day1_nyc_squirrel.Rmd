@@ -72,8 +72,8 @@ table(squirrel$Shift)
 
 ## Exercise
 
-- How many gray squirrels were found in the morning (AM) vs afternoon (PM)?
+- How many gray squirrels were found in the morning (AM) vs. afternoon (PM)?
 
-- Other questions from Etherpad
+- Other questions from Etherpad (post your answers on the Etherpad)
 
 

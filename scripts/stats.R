@@ -1,3 +1,11 @@
+# Sampling
+random_zero <- rnorm(100, mean = 0, sd = 1)
+random_one <- rnorm(100, mean = 1, sd = 1)
+
+sample(LETTERS, 4)
+
+
+# Correlations
 
 cor.test(heroes$Height, heroes$Weight)
 

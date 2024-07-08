@@ -3,7 +3,9 @@
 title: "Getting started in R"
 author: "Rao"
 date: "2023-07-04"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -82,7 +84,7 @@ The `read` family functions are useful for reading text-based data formats like 
 
 ```{r}
 # reading data from file
-squirrel <- read.csv("nyc_squirrel_uniq_plus.csv")
+squirrel <- read.csv("../datasets/nyc_squirrel_uniq_plus.csv")
 
 ```
 
@@ -150,7 +152,7 @@ table(squirrel$Shift)
 To install packages from CRAN:
 
 ```{r}
-install.packages("tidyverse")
+# install.packages("tidyverse")
 library(tidyverse)
 ```
 

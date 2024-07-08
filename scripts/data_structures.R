@@ -1,4 +1,4 @@
-
+my_var <- "apple"
 # atomic vectors
 my_vector <- c(1, 2, 3, 5)
 my_vec2 <- 1:400
@@ -7,8 +7,9 @@ my_vector
 my_vec2
 
 my_vector[4]
+my_vector[3:4]
 
-squirrel[1:2, ]
+squirrel[c(1, 2), ]
 # subset the 3, 6, 10 rows
 squirrel[c(3, 6, 10), ]
 
@@ -33,4 +34,4 @@ squirrel[[3]] # all data.frames are lists
 
 # matrix
 matrix(1:40, nrow = 10)
-as.matrix(squirrel)
+head(as.matrix(squirrel))

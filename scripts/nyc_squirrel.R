@@ -1,6 +1,6 @@
 getwd() # get working directory
 
-# also can sssign using = (same as the arrow)
+# also can assign using = (same as the arrow)
 squirrel <- read.csv(file = "../datasets/nyc_squirrel_uniq_plus.csv", 
                     header = TRUE)
 

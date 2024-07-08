@@ -1,12 +1,24 @@
-## Base R plotting
+## DAY 2 AFTERNOON SESSIONS: PLOTTING WITH BASE R AND GGPLOT2 ####
 
-# Histograms
+### Base R ####
+#Let´s start by exploring basic R plotting. 
+#It is important to understand there is no need to remember all the arguments and optional things we can do with graphs. The important is to understand how plotting works and know the sources to get the information to reach your desired plot.
+#We will work in heroes dataset
+heroes = read.csv("../datasets/heroes_information.csv")
+View(heroes)
+str(heroes)
+heroes$Publisher = as.factor(heroes$Publisher) # change Publisher variable to factor
+heroes$Gender = as.factor(heroes$Gender) # change Gender variable to factor
+levels(heroes$Gender)= c("Not Specified", "Female", "Male")# Define a new level as "Not Specified"
+
+
+#### Histograms ####
 hist(heroes$Height) # Histogram to see distribution
 hist(heroes$Height, breaks=50) # More detail
 hist(heroes$Height, breaks=50, col="red") # Add colour
 hist(heroes$Height, breaks=50, col="red", main = "Height distribution") # Add title
 
-# Barplots
+#### Barplots ####
 plot(heroes$Publisher) # Barplot
 plot(heroes$Publisher, las=2) # turn 90 degrees x labels
 plot(heroes$Publisher, las=2, cex.names=0.6) # change size labels
@@ -14,7 +26,7 @@ plot(heroes$Publisher, las=2, cex.names=0.6, ylim= c(0,500)) # Increase y axis r
 plot(heroes$Publisher, las=2, cex.names=0.6, ylim= c(0,500), main = "Barplot of heroes by publisher") # add title
 
 
-# XY graphs / scatterplots / correlation
+#### XY graphs / scatterplots / correlation ####
 plot(heroes$Height, heroes$Weight) # Scatterplot of x and y values
 plot(heroes$Height, heroes$Weight, col="blue") #colour for every gender
 plot(heroes$Height, heroes$Weight, col=heroes$Gender) #colour for every gender
@@ -27,7 +39,7 @@ legend(x=700, y=700, legend = levels(heroes$Gender), col=c(1:3), pch= 24) #creat
 # Remember we can check the different symbols we can use  
 ggpubr::show_point_shapes()
 
-# Boxplots
+#### Boxplots ####
 boxplot(heroes$Height) # We can see distribution of the variable Height
 boxplot(heroes$Height,heroes$Weight) # We can plot multiple boxplots (multiple variables)
 boxplot(heroes$Height,heroes$Weight, names=c("Height", "Weight")) # Add name of variables plotted
@@ -37,10 +49,11 @@ plot(heroes$Gender, heroes$Height) # plot height data splited by Gender
 plot(heroes$Gender, heroes$Height, col=c("green","blue", "red")) #add colour
 plot(heroes$Gender, heroes$Height, col=c("green","blue", "red"), xlab = "Gender" ) #change x axis title
 
-# Save graphs
+#### Save graphs ####
 pdf("Barplot_heroes.pdf")
 plot(heroes$Publisher, las=2, cex.names = 0.6, ylim= c(0,500), main = "Barplot of heroes by publisher") 
 dev.off()
+
 
 pdf("Barplot_heroes.pdf", width=15, height = 15)
 plot(heroes$Publisher, las=2, cex.names = 0.6, ylim= c(0,500), main = "Barplot of heroes by publisher") 
@@ -50,7 +63,7 @@ png("Hero_scatterplot.png")
 plot(heroes$Height, heroes$Weight, col=heroes$Gender, pch=24)
 dev.off()
 
-# More advanced information
+#### More advanced information####
 # Colours can be defined in different ways
 
 # specifing colour name (most common)
@@ -68,17 +81,28 @@ boxplot(heroes$Height, col=431)
 # using rgb() function to build a color (red, green, blue)
 boxplot(heroes$Height, col=rgb(0.3, 0.7, 0.3))
 
+#### Exercises ####
+
 
 # Plot a boxplot of the Weight by Alignment.
+
+
+
 
 
 # Plot the frequency of every alignment in the dataset
 
 
+
+
 # Colour the previous plot
 
 
-## Plotting with ggplot2
+
+### ggplot2 ####
+#Plotting package that is part of tidyverse.
+#We will work mostly on scatterplot
+
 
 # Install/load ggplot2
 #install.packages("ggplot2")
@@ -130,6 +154,7 @@ ggplot(data = heroes, mapping = aes(Weight,Height))+
   geom_point(aes(colour = Gender))+
   theme_dark() # dark style
 
+#### Facets ####
 
 # Split data into different graphs using facets
 ggplot(data = heroes, mapping = aes(Weight,Height)) +
@@ -149,11 +174,9 @@ ggplot(data = heroes, mapping = aes(Weight,Height))+
   facet_grid(Gender~Alignment) # it can be split in two variable
 
 
-```
+#### Boxplots ####
+#Let´s work now a bit on a different type of graph: boxplot
 
-Let´s work now a bit on a different type of graph: boxplot
-
-```{r}
 # Boxplot for Gender and Weight
 ggplot(data = heroes, mapping = aes(Gender,Weight)) +
   geom_boxplot(aes(colour=Gender)) +
@@ -165,7 +188,9 @@ ggplot(data = heroes, mapping = aes(Gender,Weight)) +
   facet_grid(~Alignment)
 
 
-# Let´s learn how to save the plot as a variable and how to export it
+
+#### Save graphs ####
+#Let´s learn how to save the plot as a variable and how to export it:
 
 # Save as a an object that we can print
 myplot = ggplot(data = heroes, mapping = aes(Gender, Weight)) +
@@ -183,14 +208,8 @@ ggsave("myplot.pdf",
 ggsave("myplot.png", 
        plot = myplot)
 
-ggsave("myplot.svg", 
-       plot = myplot)
 
-```
-
-
-
-# Some things to have in mind  
+#### Some things to have in mind #### 
 
 # Let´s take this one graph we have worked with before
 ggplot(data = heroes, mapping = aes(Weight,Height)) +
@@ -217,15 +236,16 @@ ggplot(data = heroes, mapping = aes(Weight,Height))+
   geom_point(aes(colour = Weight > 100)) # we can even decide a condition to based our colour in (we will see conditions later in the course)
 
 
+# Some geometries only need a single mapping
+
 ggplot(heroes) + 
   geom_histogram(aes(x = Weight))
 
 
-#### Some practice
+#### Exercises ####
 
 # Modify the code below to make points as squares and more transparent.
-# Hint 1: transparency is controlled with alpha, and shape with shape
-# Hint 2: remember the difference between mapping and setting aesthetics
+
 
 ggplot(heroes) + 
   geom_point(aes(Weight,  Height))
@@ -235,25 +255,55 @@ ggplot(heroes) +
 
 
 # Symbols transparent
+# Hint 1: transparency is controlled with alpha, and shape with shape
+# Hint 2: remember the difference between mapping and setting aesthetics
+
+
+
+
+
+# Solution
+ggplot(heroes) + 
+  geom_point(aes(Weight,  Height), shape = "square", alpha=0.5)
+
 
 
 # Colour the data on the graph depending on alignment
 
-ggplot()
 
 
-# Now add a main title
-ggplot()
+
+
+
+
+
+
+# Solution
+ggplot(heroes) + 
+  geom_point(aes(Weight,  Height, colour= Alignment), shape = "square", alpha=0.5)
+
+
+ # Now add a main title
+
+
+
+
+# Solution
+ggplot(heroes) + 
+  geom_point(aes(Weight,  Height, colour= Alignment), shape = "square", alpha=0.5) +
+  ggtitle ("Heroes: weight vs height by alignment")
 
 
 # Now let´s work with categorical data and boxplot.
-# First plot just the continuos data Weight
+# First plot just the continuos data Weigth
 
 ggplot(data = heroes, mapping = aes(Weight)) +
   geom_boxplot()
 
-# We can see the boxplot representing the weights of the whole dataset. With a line there is the median represented.
-# Let´s add now the categorical data we would like to plot too.
+
+#We can see the boxplot representing the weights of the whole dataset. With a line there is the median represented.
+#Let´s add now the categorical data we would like to plot too.
+
 
 ggplot(data = heroes, mapping = aes(Weight,Gender)) +
   geom_boxplot()
@@ -264,11 +314,11 @@ ggplot(data = heroes, mapping = aes(Weight,Gender)) +
 ggplot(data = heroes, mapping = aes(Weight,Gender)) +
   geom_boxplot()
 
+
 # Try to change the axis orientation so that Gender shows in x axis
 
 ggplot(data = heroes, mapping = aes(Gender, Weight)) +
   geom_boxplot() 
-
 
 
 # Let´s add the classic theme
@@ -278,6 +328,7 @@ ggplot(data = heroes, mapping = aes(Gender, Weight)) +
   theme_classic()
 
 # Add some colour
+
 ggplot(data = heroes, mapping = aes(Gender, Weight, colour= Gender)) +
   geom_boxplot()
 
@@ -293,24 +344,22 @@ ggplot(data = heroes, mapping = aes(Gender, Weight)) +
   geom_boxplot(aes(fill= Gender)) +
   scale_fill_manual(values=c("green", "purple"))
 
-
-
-
 # Let us have a look to the following histogram
 
 ggplot(heroes, aes(Weight)) +
   geom_histogram()
 
+# Colour bars in blue:
 
-# Colour the bars in blue:
-  
 ggplot(heroes, aes(Weight)) +
   geom_histogram(colour="Blue")
+
 
 # Try fill instead of colour to define the blue bars:
   
 ggplot(heroes, aes(Weight)) +
   geom_histogram(fill="Blue")
+
 
 # Going back to our x y plot:
   
@@ -320,6 +369,7 @@ ggplot(heroes) +
 
 
 # Let´s add a theme:
+
 ggplot(heroes) + 
   geom_point(aes(Weight,  Height, colour= Alignment), shape = "square", alpha=0.5) +
   ggtitle ("Heroes: weight vs height by alignment") +
@@ -342,12 +392,12 @@ ggplot(heroes) +
   theme_minimal() +
   facet_grid(Gender~Alignment)
 
-
 # We would probably visualise the data better with a darker canvas
 ggplot(heroes) + 
   geom_point(aes(Weight,  Height, colour= Alignment), shape = "square", alpha=0.5) +
   ggtitle ("Heroes: weight vs height by alignment") +
   facet_grid(Gender~Alignment)
+
 
 # Now we try facets on the previous boxplot graph
 ggplot(data = heroes, mapping = aes(Gender, Weight)) +
@@ -356,10 +406,12 @@ ggplot(data = heroes, mapping = aes(Gender, Weight)) +
 
 
 # Again let´s split data by alignment
+
 ggplot(data = heroes, mapping = aes(Gender, Weight)) +
   geom_boxplot(aes(colour=Gender)) +
   theme_classic() +
   facet_grid(~Alignment)
+
 
 # How to export graphs
 
@@ -390,3 +442,5 @@ print(myplot)
 dev.off()
 
 # From RScript file we can export directly from the outcome window (go to RScript)
+
+

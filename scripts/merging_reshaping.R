@@ -25,8 +25,11 @@ colnames(powers_vision_long)
 
 powers_vision_long %>%
   select(name, all_vision_powers, all_vision_values) %>%
+  mutate(all_vision_values = as.logical(all_vision_values)) %>%
   group_by(all_vision_powers) %>%
-  summarise(sum(all_vision_values))
+  summarise(sum(all_vision_values)) %>%
+  ggplot(aes(x = all_vision_powers, y = `sum(all_vision_values)`)) +
+    geom_col()
 
 table(powers_vision_long$all_vision_values)
 

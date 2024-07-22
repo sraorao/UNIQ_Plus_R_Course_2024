@@ -2,7 +2,10 @@
 title: "Diabetes"
 author: "Beatriz Gámez"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 Data from pregnant women. 
 
 ```{r import data}
-diabetes= read.csv("diabetes.csv")
+diabetes= read.csv("../datasets/diabetes.csv")
 View(diabetes)
 boxplot(diabetes)
 ```
@@ -112,7 +115,7 @@ summary(diabetes$Outcome[diabetes$Pregnancies ==1])
 summary(diabetes$Outcome[diabetes$Pregnancies != 1])
 
 # Are these ratio significantly different?
-TEST # it looks like there are more diabetic cases among women with just one pregnancy. 
+# it looks like there are more diabetic cases among women with just one pregnancy. 
 
 ```
 

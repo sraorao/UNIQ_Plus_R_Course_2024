@@ -2,7 +2,9 @@
 title: "Untitled"
 author: "Rao"
 date: "2023-07-07"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -108,7 +110,7 @@ if (temperature < 10) {
 
 
 # Let's test what happens using if... else on a vector
-v = c(1:10)
+v = 10
 
 if(v == 3){
   print("Value equals 3")

@@ -1,6 +1,6 @@
 # Let´s create a vector with multiple NAs
 my_data = c(3, 4, NA, 4, 5, NA, 1, NA, NA)
-
+median(my_data, na.rm = TRUE)
 # Test if there are NAs in our data
 is.na(my_data) # Gives us a logical vector
 which(is.na(my_data)) # gives us the location (indexes) of these NAs (TRUE)

@@ -108,7 +108,7 @@ View(data.frame)
 When you have related information in two or more data.frames, you can use the `merge()` function to join them correctly. The two data.frames that you want to join must have one or more columns with the same name - these are the ID columns that R uses to reorder the rows to match in both data.frames. If there are equivalent columns but the names are different, the column name in one has to be renamed to match the name in the other data.frame (as in the following example).
 
 ```{r}
-heroes <- read.csv("../datasets/heroes_information.csv")
+# heroes <- read.csv("../datasets/heroes_information.csv")
 powers <- read.csv("../datasets/super_hero_powers.csv")
 
 colnames(powers) <- sub("hero_names", "name", colnames(powers))
